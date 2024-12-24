@@ -1,3 +1,24 @@
+Common commands:
+alias k=kubectl
+k get pods
+k get nodes 
+k get pods -o wide
+k get nodes -o wide 
+k get pods --show-labels
+k get all 
+k get pods -n kube-system
+k get deployments 
+k get svc
+k get pvc
+k get rs
+k get secrets 
+k get endpoints 
+k describe pod <podname>
+k explain pod.spec.name [or] k explain pod
+k explain service 
+k explain deployment
+
+
 **Exercise1: creating our first pod:**
 
 apiVersion: v1
