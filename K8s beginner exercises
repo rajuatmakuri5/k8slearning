@@ -32,6 +32,15 @@ spec:
     ports:
     - containerPort: 80
 
+apiVersion: v1
+kind: Pod
+metadata:
+  name: myfirstapp
+spec:
+  containers:
+  - name: myfirstapp
+    image: richardchesterwood/k8s-fleetman-webapp-angular:release0
+
 **commands**:
 kubectl apply -f myfirstpod.yaml
 kubectl describe pod myfirstapp
