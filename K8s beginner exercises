@@ -25,6 +25,8 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: nginx
+  labels:
+    app: nginx
 spec:
   containers:
   - name: nginx
@@ -103,7 +105,7 @@ metadata:
   name: nginx-service
 spec:
   selector:
-    app: custom-nginx
+    app: nginx
   ports:
     - protocol: TCP
       port: 80
@@ -114,6 +116,8 @@ kubectl apply -f nginx-service.yaml
 kubectl get services
 
 Testing the service:
+
+deploy a busybox pod to test the service:
 
 apiVersion: v1
 kind: Pod
@@ -128,3 +132,5 @@ spec:
     tty: true
 kubectl apply -f busybox-pod.yaml
 kubectl exec -it busybox -- /bin/sh
+test connection to service by curl/wget commands 
+wget -qO- nginx-service
