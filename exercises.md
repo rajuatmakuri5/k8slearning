@@ -250,5 +250,121 @@ kubectl apply -f fluentd.yaml
 kubectl get pods -o wide
 kubectl get daemonset
 ```
+# **Exercise 5: Kubernetes Storage**
+**Create local storage class**
+```yaml
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: local-storage
+provisioner: kubernetes.io/no-provisioner
+volumeBindingMode: WaitForFirstConsumer
+```
+```
+kubectl apply -f local-sc.yaml
+kubectl get sc
+```
+**Create a Persistent Volume (PV):
+We need to create local directory /mnt/data on node01 -r node02 
+This configuration will create a PersistentVolume that uses /mnt/data as the local storage
+```yaml
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: local-pv
+spec:
+  capacity:
+    storage: 5Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: local-storage
+  local:
+    path: /mnt/data
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              values:
+                - node01
+```
+```
+kubectl apply -f local-pv.yaml
+```
+**Create PersistentVolumeClaim(PVC):
+```yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: local-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+  storageClassName: local-storage
+```
+```
+kubectl apply -f local-pvc.yaml
+kubectl get storageclass
+kubectl get pv
+kubectl get pvc
+```
+**Attach the storage to a test pod:**
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: test-pod
+spec:
+  containers:
+    - name: test-container
+      image: busybox
+      command: ["sleep", "3600"]
+      volumeMounts:
+        - mountPath: "/data"
+          name: local-storage
+  volumes:
+    - name: local-storage
+      persistentVolumeClaim:
+        claimName: local-pvc
+```
+```
+kubectl apply test-pod.yaml
+kubectl get pods
+```
+Login to the test pod and lets create few files:
+```
+k exec -it test-pod -- sh
+/ # cd  data/
+/data # ls -lrt
+total 0
+/data # touch test1
+/data # touch test2
+/data # touch test3
+/data # ls -lrt
+total 0
+-rw-r--r--    1 root     root             0 Dec 25 10:42 test1
+-rw-r--r--    1 root     root             0 Dec 25 10:42 test2
+-rw-r--r--    1 root     root             0 Dec 25 10:42 test3
+/data # exit
+```
+Delete and recreate the pod to see if the files are still exist
+```
+k delete pod test-pod
+k get pods
+k apply -f test-pod.yaml
+k exec -it test-pod -- sh
+cd data/
+ls -lrt
+```
+We can alos verify the local directory on the node:
+```
+cd /mnt/data 
+```
 
 
