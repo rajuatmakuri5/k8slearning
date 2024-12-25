@@ -88,7 +88,7 @@ kubectl rollout status deployment/nginx-deployment
 kubectl describe deployment nginx-deployment
 
 roll back an update:
-kubectl set image deployment/nginx-deployment nginx=nginx:1.161
+kubectl set image deployment/nginx-deployment nginx=nginx:1.161 --record
 kubectl rollout status deployment/nginx-deployment
 kubectl get rs
 kubectl get pods
