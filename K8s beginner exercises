@@ -94,3 +94,37 @@ kubectl get rs
 kubectl get pods
 kubectl rollout history deployment/nginx-deployment
 kubectl rollout undo deployment/nginx-deployment [or] kubectl rollout undo deployment/nginx-deployment --to-revision=2
+
+Exercise3: ClusterIp service
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+spec:
+  selector:
+    app: custom-nginx
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: ClusterIP
+
+kubectl apply -f nginx-service.yaml
+kubectl get services
+
+Testing the service:
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: busybox
+spec:
+  containers:
+  - name: busybox
+    image: busybox
+    command: ["/bin/sh"]
+    stdin: true
+    tty: true
+kubectl apply -f busybox-pod.yaml
+kubectl exec -it busybox -- /bin/sh
