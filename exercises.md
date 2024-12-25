@@ -291,6 +291,13 @@ kubectl apply -f local-sc.yaml
 kubectl get sc
 ```
 **Create a Persistent Volume (PV):**
+
+:memo: **Note:** <font color="red"> *we dont have a distributed storage or CNI configured in this environment, so we cannot use provisioners to create dynamic storage (PV will automatically created based on PVC)
+here we are simply using local storage on a node for our learning purpose and this local storage based PV/PVC is not accessible cluster wide.
+it is node specific.* <font>
+
+
+
 We need to create local directory /mnt/data on node01 -r node02 
 This configuration will create a PersistentVolume that uses /mnt/data as the local storage
 ```yaml
