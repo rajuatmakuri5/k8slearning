@@ -66,6 +66,9 @@ spec:
     image: richardchesterwood/k8s-fleetman-webapp-angular:release0
 ```
 ### **Commands**
+We will deploy two pods using above yaml files declaratively.
+Once pods are deployed, we will look at the pods, and try to access the pod shell by following below commands.
+
 ```bash
 kubectl apply -f <filename>.yaml
 kubectl describe pod <podname>
@@ -105,6 +108,9 @@ spec:
         ports:
         - containerPort: 80
 ```
+We will create our first kubernetes deployment using the above yaml file.
+Once deployment created, we will verify it and try to perform updating and rollback on the deployments by following below commands.
+
 # **commands:**
 ```bash
 kubectl apply -f https://k8s.io/examples/controllers/nginx-deployment.yaml
@@ -209,7 +215,7 @@ kubectl apply -f fluentd.yaml
 kubectl get pods -o wide
 kubectl get daemonset
 ```
-**Using node selector to define scope**
+**Using node selector to define scope, node selector hostname**
 ``` yaml
 apiVersion: apps/v1
 kind: DaemonSet
@@ -236,6 +242,7 @@ kubectl apply -f fluentd.yaml
 kubectl get pods -o wide
 kubectl get daemonset
 ```
+Defining scope with node label disk: ssd
 ```yaml
 apiVersion: apps/v1
 kind: DaemonSet
