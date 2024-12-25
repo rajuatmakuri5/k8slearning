@@ -31,7 +31,10 @@ k explain service
 k explain deployment
 
 ```
-# **Exercise 1: Creating Our First Pod**
+<details>
+  <summary>Exercise 1: Creating our first pod</summary>
+  
+### **Exercise 1: Creating our first pod**
 
 ### **Pod 1: nginx**
 
@@ -72,9 +75,12 @@ wget http://localhost:80
 cat index.html
 kubectl delete pod nginx
 ```
+</details>
 
+<details>
+  <summary>Exercise 2: Creating our first deployment</summary>
 
-# **Exercise2: creating our first deployment**
+### **Exercise2: Creating our first deployment**
 
 ```yaml
 apiVersion: apps/v1
@@ -124,8 +130,12 @@ kubectl get pods
 kubectl rollout history deployment/nginx-deployment
 kubectl rollout undo deployment/nginx-deployment [or] kubectl rollout undo deployment/nginx-deployment --to-revision=2
 ```
+</details>
 
-# **Exercise3: ClusterIp service**
+<details>
+  <summary>Exercise 3: ClusterIp service</summary>
+  
+### **Exercise 3: ClusterIp service**
 
 ```yaml
 apiVersion: v1
@@ -169,8 +179,11 @@ kubectl exec -it busybox -- /bin/sh
 test connection to service by curl/wget commands 
 wget -qO- nginx-service
 ```
+</details>
 
-# **Exercise4: Deamonsets**
+<details>
+  <summary>Exercise 4: Deamonsets</summary>
+### **Exercise 4: Deamonsets**
 
 ```yaml
 apiVersion: apps/v1
@@ -250,7 +263,13 @@ kubectl apply -f fluentd.yaml
 kubectl get pods -o wide
 kubectl get daemonset
 ```
-# **Exercise 5: Kubernetes Storage**
+
+</details>
+
+<details>
+  <summary>Exercise 5: Kubernetes Storage</summary>
+  
+### **Exercise 5: Kubernetes Storage**
 **Create local storage class**
 ```yaml
 apiVersion: storage.k8s.io/v1
@@ -289,7 +308,7 @@ spec:
             - key: kubernetes.io/hostname
               operator: In
               values:
-                - node01
+                - node-01
 ```
 ```
 kubectl apply -f local-pv.yaml
@@ -366,5 +385,5 @@ We can alos verify the local directory on the node:
 ```
 cd /mnt/data 
 ```
-
+</details>
 
