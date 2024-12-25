@@ -130,6 +130,7 @@ spec:
     command: ["/bin/sh"]
     stdin: true
     tty: true
+
 kubectl apply -f busybox-pod.yaml
 kubectl exec -it busybox -- /bin/sh
 test connection to service by curl/wget commands 
