@@ -169,3 +169,86 @@ kubectl exec -it busybox -- /bin/sh
 test connection to service by curl/wget commands 
 wget -qO- nginx-service
 ```
+
+# **Exercise4: Deamonsets**
+
+```yaml
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: fluentd
+spec:
+  selector:
+    matchLabels:
+      name: fluentd
+  template:
+    metadata:
+      labels:
+        name: fluentd
+    spec:
+      containers:
+        - name: fluentd-elasticsearch
+          image: quay.io/fluentd_elasticsearch/fluentd:latest
+```
+**Commands:**
+```bash
+kubectl apply -f fluentd.yaml
+kubectl get pods -o wide
+kubectl get daemonset
+```
+**Using node selector to define scope**
+``` yaml
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: fluentd
+spec:
+  selector:
+    matchLabels:
+      name: fluentd
+  template:
+    metadata:
+      labels:
+        name: fluentd
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: node01
+      containers:
+        - name: fluentd-elasticsearch
+          image: quay.io/fluentd_elasticsearch/fluentd:latest
+```
+**Commands:**
+```bash
+kubectl apply -f fluentd.yaml
+kubectl get pods -o wide
+kubectl get daemonset
+```
+```yaml
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: fluentd
+spec:
+  selector:
+    matchLabels:
+      name: fluentd
+  template:
+    metadata:
+      labels:
+        name: fluentd
+    spec:
+      nodeSelector:
+        disk: ssd
+      containers:
+        - name: fluentd-elasticsearch
+          image: quay.io/fluentd_elasticsearch/fluentd:latest
+```
+**Commands:**
+```bash
+kubectl label node node02 disk=ssd
+kubectl apply -f fluentd.yaml
+kubectl get pods -o wide
+kubectl get daemonset
+```
+
+
