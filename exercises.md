@@ -264,7 +264,7 @@ volumeBindingMode: WaitForFirstConsumer
 kubectl apply -f local-sc.yaml
 kubectl get sc
 ```
-**Create a Persistent Volume (PV):
+**Create a Persistent Volume (PV):**
 We need to create local directory /mnt/data on node01 -r node02 
 This configuration will create a PersistentVolume that uses /mnt/data as the local storage
 ```yaml
@@ -294,7 +294,7 @@ spec:
 ```
 kubectl apply -f local-pv.yaml
 ```
-**Create PersistentVolumeClaim(PVC):
+**Create PersistentVolumeClaim(PVC):**
 ```yaml
 apiVersion: v1
 kind: PersistentVolumeClaim
